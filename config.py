@@ -28,7 +28,6 @@ from libqtile import bar, layout, qtile, widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
-from libqtile.command import lazy
 
 mod = "mod4"
 terminal = guess_terminal()
@@ -96,18 +95,6 @@ for vt in range(1, 8):
 
 
 groups = [Group(i) for i in "123456789"]
-
-
-
-keys = [
-    # Atajos para mover entre grupos y pantallas
-    Key([mod], "1", lazy.group["1"].toscreen(0)),
-    Key([mod], "2", lazy.group["2"].toscreen(1)),
-
-    # Mover ventanas entre pantallas
-    Key([mod, "shift"], "h", lazy.window.toscreen(0)),
-    Key([mod, "shift"], "l", lazy.window.toscreen(1)),
-]
 
 layouts = [
     layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=4),
