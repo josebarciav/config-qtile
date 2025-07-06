@@ -1,1 +1,2 @@
-xrandr --output eDP-1 --primary --mode 1920x1080 --pos 0x0 --output HDMI-1-2 --mode 3440x1440 --pos 1920x0
+setxkbmap es &
+xrandr --output eDP-1 --primary --mode 1920x1080 --pos 0x0 --output HDMI-1-0 --mode 3440x1440 --pos 1920x0
