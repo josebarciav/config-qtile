@@ -60,6 +60,12 @@ keys = [
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
+    # Menu
+    Key([mod], "m", lazy.spawn("rofi -show drun")),
+
+    # Window Nav
+    Key([mod, "shift"], "m", lazy.spawn("rofi -show")),
+    Key([mod, "shift"], "e", lazy.spawn("rofi -show emoji")),
 ]
 
 # VT switching for Wayland
@@ -93,6 +99,7 @@ def init_widgets_main():
         widget.Prompt(),
         widget.WindowName(),
         widget.Clock(format='%Y-%m-%d %a %I:%M %p'),
+        widget.Clock(format='%Y-%m-%d %a %I:%M %p'),
         widget.Systray(),
     ]
 
@@ -113,6 +120,7 @@ def autostart_xrandr():
     with open(log, 'a') as f:
         f.write("xrandr startup\n")
         try:
+            f.write("Pantalla 1\n")
             out = subprocess.check_output(
                 ["/usr/bin/xrandr", "--output", "eDP-1",
                  "--primary", "--mode", "1920x1080", "--pos", "0x0", "--rotate", "normal"],
@@ -122,6 +130,7 @@ def autostart_xrandr():
         except subprocess.CalledProcessError as e:
             f.write(f"ERROR {e.returncode}: {e.output.decode()}\n")
         try:
+            f.write("Pantalla 2\n")
             out = subprocess.check_output(
                 ["/usr/bin/xrandr", "--output", "HDMI-1-0",
                  "--mode", "3440x1440", "--right-of", "eDP-1", "--rotate", "normal"],
@@ -140,7 +149,7 @@ def restart_on_randr(qt, ev):
 #     Screen(top=status_bar(init_widgets_secondary())),
 # ]
 
-screens = []
+screens = [Screen(top=status_bar(init_widgets_main())),]
 
 # Count connected monitors and append secondary bars
 xrandr_cmd = "xrandr | grep -w 'connected' | cut -d ' ' -f 2 | wc -l"
@@ -161,7 +170,7 @@ else:
 if connected_monitors > 1:
     for _ in range(connected_monitors - 1):
         screens.append(
-            Screen(top=status_bar(init_widgets_main()))
+            Screen(top=status_bar(init_widgets_secondary()))
         )
 
 mouse = [
